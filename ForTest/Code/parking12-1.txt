@@ -1,0 +1,219 @@
+#include <opencv2/core/core.hpp>
+#include <opencv2/objdetect/objdetect.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <algorithm>
+#include <iostream>
+#include <ctime>
+
+using namespace std;
+using namespace cv;
+
+Mat ConvertRGB2Gray(Mat frame);
+Mat Gray2BW(Mat gray, int th);
+bool compare_rect(const Rect &a, const Rect &b) {
+	return a.width < b.width;
+}
+
+int main()
+{
+	CascadeClassifier cascade;
+	cascade.load("C:\\Users\\DELL\\Desktop\\ForTest\\Cascade\\car70.xml");
+	Mat img = cv::imread("C:\\Users\\DELL\\Desktop\\ForTest\\Image\\parking12.jpg");
+	Mat img1 = cv::imread("C:\\Users\\DELL\\Desktop\\ForTest\\Image\\parking12.jpg");
+	Mat gray = ConvertRGB2Gray(img);
+
+	char str[200];
+	std::vector<Rect> cars;
+	cascade.detectMultiScale(gray, cars, 1.1, 13, 3, Size(24, 24));
+	sort(cars.begin(), cars.end(), compare_rect);
+	//printf("Number of parking spaces can detected by Cascade classifiers = %d \n", cars.size());
+
+	sort(cars.begin(), cars.end(), compare_rect);
+	for (size_t i = 0; i < cars.size(); i++) {
+		Point center(cars[i].x +
+			cars[i].width*0.5,
+			cars[i].y +
+			cars[i].height*0.5
+		);
+
+		rectangle(img, Rect(cars[i].x, cars[i].y, cars[i].width, cars[i].height), Scalar(0, 0, 0), 30);
+
+		sprintf(str, "%d", cars.size() - i);
+		putText(img, str, Point(cars[i].x + cars[i].width*0.5 - 10, cars[i].y + cars[i].height*0.5 + 10), FONT_HERSHEY_PLAIN, 2, Scalar(50, 50, 50), 2);
+
+	}
+	imshow("Car Detection2", img);
+
+	Mat gray2 = ConvertRGB2Gray(img);
+
+	cv::Mat bw2 = gray2 > 100;
+	imshow("Car Detection4", bw2);
+
+	Rect crop11 = Rect(160, 470, 260, 360);
+	Mat CrpImg11 = bw2(crop11);
+	//imshow("Crop11", CrpImg11);
+
+	Rect crop12 = Rect(420, 470, 260, 360);
+	Mat CrpImg12 = bw2(crop12);
+	//imshow("Crop12", CrpImg12);
+
+	Rect crop13 = Rect(680, 470, 260, 360);
+	Mat CrpImg13 = bw2(crop13);
+	//imshow("Crop13", CrpImg13);
+
+	Rect crop14 = Rect(940, 470, 260, 360);
+	Mat CrpImg14 = bw2(crop14);
+	//imshow("Crop14", CrpImg14);
+
+	Rect crop15 = Rect(1200, 470, 260, 360);
+	Mat CrpImg15 = bw2(crop15);
+	//imshow("Crop15", CrpImg15);
+
+
+
+	/*int TotalNumberOfPixels1 = CrpImg1.rows * CrpImg1.cols;
+	int ZeroPixels1 = TotalNumberOfPixels1 - countNonZero(CrpImg1);
+	cout << "CrpImg1 total " << TotalNumberOfPixels1 << endl;
+	cout << "CrpImg1 " << ZeroPixels1 << endl;
+
+
+	int TotalNumberOfPixels2 = CrpImg2.rows * CrpImg2.cols;
+	int ZeroPixels2 = TotalNumberOfPixels2 - countNonZero(CrpImg2);
+	cout << "CrpImg2 " << ZeroPixels2 << endl;
+
+
+	int TotalNumberOfPixels3 = CrpImg3.rows * CrpImg3.cols;
+	int ZeroPixels3 = TotalNumberOfPixels3 - countNonZero(CrpImg3);
+	cout << "CrpImg3 " << ZeroPixels3 << endl;
+
+	int TotalNumberOfPixels4 = CrpImg4.rows * CrpImg4.cols;
+	int ZeroPixels4 = TotalNumberOfPixels4 - countNonZero(CrpImg4);
+	cout << "CrpImg4 " << ZeroPixels4 << endl;
+
+	int TotalNumberOfPixels5 = CrpImg5.rows * CrpImg5.cols;
+	int ZeroPixels5 = TotalNumberOfPixels5 - countNonZero(CrpImg5);
+	cout << "CrpImg5 " << ZeroPixels5 << endl;
+
+	int TotalNumberOfPixels6 = CrpImg6.rows * CrpImg6.cols;
+	int ZeroPixels6 = TotalNumberOfPixels6 - countNonZero(CrpImg6);
+	cout << "CrpImg6 " << ZeroPixels6 << endl;
+
+	int TotalNumberOfPixels7 = CrpImg7.rows * CrpImg7.cols;
+	int ZeroPixels7 = TotalNumberOfPixels7 - countNonZero(CrpImg7);
+	cout << "CrpImg7 " << ZeroPixels7 << endl;
+
+	int TotalNumberOfPixels8 = CrpImg8.rows * CrpImg8.cols;
+	int ZeroPixels8 = TotalNumberOfPixels8 - countNonZero(CrpImg8);
+	cout << "CrpImg8 " << ZeroPixels8<< endl;
+
+	int TotalNumberOfPixels9 = CrpImg9.rows * CrpImg9.cols;
+	int ZeroPixels9 = TotalNumberOfPixels9 - countNonZero(CrpImg9);
+	cout << "CrpImg9 " << ZeroPixels9 << endl;
+
+	int TotalNumberOfPixels10 = CrpImg10.rows * CrpImg10.cols;
+	int ZeroPixels10 = TotalNumberOfPixels10 - countNonZero(CrpImg10);
+	cout << "CrpImg10 " << ZeroPixels10 << endl;*/
+
+	int TotalNumberOfPixels11 = CrpImg11.rows * CrpImg11.cols;
+	int ZeroPixels11 = TotalNumberOfPixels11 - countNonZero(CrpImg11);
+	//cout << "CrpImg11 " << ZeroPixels11 << endl;
+
+
+	int TotalNumberOfPixels12 = CrpImg12.rows * CrpImg12.cols;
+	int ZeroPixels12 = TotalNumberOfPixels12 - countNonZero(CrpImg12);
+	//cout << "CrpImg12 " << ZeroPixels12 << endl;
+
+
+	int TotalNumberOfPixels13 = CrpImg13.rows * CrpImg13.cols;
+	int ZeroPixels13 = TotalNumberOfPixels13 - countNonZero(CrpImg13);
+	//cout << "CrpImg13 " << ZeroPixels13 << endl;
+
+	int TotalNumberOfPixels14 = CrpImg14.rows * CrpImg14.cols;
+	int ZeroPixels14 = TotalNumberOfPixels14 - countNonZero(CrpImg14);
+	//cout << "CrpImg14 " << ZeroPixels14 << endl;
+
+	int TotalNumberOfPixels15 = CrpImg15.rows * CrpImg15.cols;
+	int ZeroPixels15 = TotalNumberOfPixels15 - countNonZero(CrpImg15);
+	//cout << "CrpImg15 " << ZeroPixels15 << endl;
+
+	int Num = 0;
+	if (ZeroPixels11 > 40000) {
+		rectangle(img1, Point(160, 470), Point(420, 830), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(160, 470), Point(420, 830), Scalar(0x0, 0x80, 0x0), 10, 0, 00);
+
+	if (ZeroPixels12 > 40000) {
+		rectangle(img1, Point(420, 470), Point(680, 830), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(420, 470), Point(680, 830), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels13 > 40000) {
+		rectangle(img1, Point(680, 470), Point(940, 830), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(680, 470), Point(940, 830), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels14 > 40000) {
+		rectangle(img1, Point(940, 470), Point(1200, 830), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(940, 470), Point(1200, 80), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels15 > 40000) {
+		rectangle(img1, Point(1200, 470), Point(1460, 830), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(1200, 470), Point(1460, 830), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+
+
+	imshow("image", img1);
+	printf("Number of parking spaces can detected  = %d \n", Num);
+	int Free = 0;
+	Free = 5 - Num;
+	printf("Number of parking spaces available = %d \n", Free);
+
+
+	waitKey(0);
+}
+
+Mat ConvertRGB2Gray(Mat frame) {
+	Size size = frame.size();
+	Mat frame_gray(size, CV_8UC1);
+	int i, j, R, G, B;
+	for (i = 0; i < frame.rows; i++) {
+		for (j = 0; j < frame.cols; j++) {
+			B = frame.at<Vec3b>(i, j)[0];
+			G = frame.at<Vec3b>(i, j)[1];
+			R = frame.at<Vec3b>(i, j)[2];
+			frame_gray.at<uchar>(i, j) = (int)(0.299*R + 0.587*G + 0.114*B);
+		}
+	}
+	return frame_gray;
+}
+
+Mat Gray2BW(Mat gray, int th) {
+	Size size = gray.size();
+	Mat bw(size, CV_8UC1);
+	int i, j;
+	for (i = 0; i < gray.rows; i++) {
+		for (j = 0; j < gray.cols; j++) {
+			if (gray.at<uchar>(i, j) < th)
+				bw.at<uchar>(i, j) = 255;
+			else
+				bw.at<uchar>(i, j) = 0;
+
+		}
+	}
+	return bw;
+}
+
+

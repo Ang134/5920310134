@@ -1,0 +1,373 @@
+#include <opencv2/core/core.hpp>
+#include <opencv2/objdetect/objdetect.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <algorithm>
+#include <iostream>
+#include <ctime>
+
+using namespace std;
+using namespace cv;
+
+Mat ConvertRGB2Gray(Mat frame);
+Mat Gray2BW(Mat gray, int th);
+bool compare_rect(const Rect &a, const Rect &b) {
+	return a.width < b.width;
+}
+
+int main()
+{
+	CascadeClassifier cascade;
+	cascade.load("C:\\Users\\DELL\\Desktop\\ForTest\\Cascade\\car70.xml");
+	Mat img = cv::imread("C:\\Users\\DELL\\Desktop\\ForTest\\Image\\parking23.jpg");
+	Mat img1 = cv::imread("C:\\Users\\DELL\\Desktop\\ForTest\\Image\\parking23.jpg");
+	Mat gray = ConvertRGB2Gray(img);
+
+	char str[200];
+	std::vector<Rect> cars;
+
+	//cascade.detectMultiScale(frame_gray, cars, 1.1, 3, 1, Size(40, 80));
+	cascade.detectMultiScale(gray, cars, 1.1, 13, 3, Size(24, 24));
+	sort(cars.begin(), cars.end(), compare_rect);
+	//printf("Number of parking spaces can detected by Cascade classifiers = %d \n", cars.size());
+
+	sort(cars.begin(), cars.end(), compare_rect);
+	for (size_t i = 0; i < cars.size(); i++) {
+		//printf("\n == %f %f %f %f == ", cars[i].x, cars[i].y, cars[i].width, cars[i].height);
+		Point center(cars[i].x +
+			cars[i].width*0.5,
+			cars[i].y +
+			cars[i].height*0.5
+		);
+
+		rectangle(img, Rect(cars[i].x, cars[i].y, cars[i].width, cars[i].height), Scalar(0, 0, 0), 30);
+
+		sprintf(str, "%d", cars.size() - i);
+		putText(img, str, Point(cars[i].x + cars[i].width*0.5 - 10, cars[i].y + cars[i].height*0.5 + 10), FONT_HERSHEY_PLAIN, 2, Scalar(50, 50, 50), 2);
+
+	}
+	//imshow("Car Detection2", img);
+
+	Mat gray2 = ConvertRGB2Gray(img);
+	//imshow("Car Detection3", gray2);
+
+	cv::Mat bw2 = gray2 > 100;
+	//mshow("Car Detection4", bw2);
+
+	Rect crop11 = Rect(110, 120, 110, 140);
+	Mat CrpImg11 = bw2(crop11);
+	//imshow("Crop11", CrpImg11);
+
+	Rect crop12 = Rect(220, 120, 120, 140);
+	Mat CrpImg12 = bw2(crop12);
+	//imshow("Crop12", CrpImg12);
+
+	Rect crop13 = Rect(340, 120, 120, 140);
+	Mat CrpImg13 = bw2(crop13);
+	//imshow("Crop13", CrpImg13);
+
+	Rect crop14 = Rect(460, 120, 100, 140);
+	Mat CrpImg14 = bw2(crop14);
+	//imshow("Crop14", CrpImg14);
+
+	Rect crop15 = Rect(560, 120, 130, 140);
+	Mat CrpImg15 = bw2(crop15);
+	//imshow("Crop15", CrpImg15);
+
+	Rect crop16 = Rect(690, 120, 120, 140);
+	Mat CrpImg16 = bw2(crop16);
+	//imshow("Crop16", CrpImg16);
+
+	Rect crop17 = Rect(810, 120, 120, 140);
+	Mat CrpImg17 = bw2(crop17);
+	//imshow("Crop17", CrpImg17);
+
+	Rect crop18 = Rect(930, 120, 120, 140);
+	Mat CrpImg18 = bw2(crop18);
+	//imshow("Crop18", CrpImg18);
+
+	Rect crop19 = Rect(1050, 120, 120, 140);
+	Mat CrpImg19 = bw2(crop19);
+	//imshow("Crop19", CrpImg19);
+
+	Rect crop20 = Rect(1050, 290, 120, 160);
+	Mat CrpImg20 = bw2(crop20);
+	//imshow("Crop20", CrpImg20);
+
+	Rect crop21 = Rect(110, 290, 110, 160);
+	Mat CrpImg21 = bw2(crop21);
+	//imshow("Crop21", CrpImg21);
+
+	Rect crop22 = Rect(220, 290, 120, 160);
+	Mat CrpImg22 = bw2(crop22);
+	//imshow("Crop22", CrpImg22);
+
+	Rect crop23 = Rect(340, 290, 120, 160);
+	Mat CrpImg23 = bw2(crop23);
+	//imshow("Crop23", CrpImg23);
+
+	Rect crop24 = Rect(460, 290, 100, 160);
+	Mat CrpImg24 = bw2(crop24);
+	//imshow("Crop24", CrpImg24);
+
+	Rect crop25 = Rect(560, 290, 130, 160);
+	Mat CrpImg25 = bw2(crop25);
+	//imshow("Crop25", CrpImg25);
+
+	Rect crop26 = Rect(690, 290, 120, 160);
+	Mat CrpImg26 = bw2(crop26);
+	//imshow("Crop26", CrpImg26);
+
+	Rect crop27 = Rect(810, 290, 120, 160);
+	Mat CrpImg27 = bw2(crop27);
+	//imshow("Crop27", CrpImg27);
+
+	Rect crop28 = Rect(930, 290, 120, 160);
+	Mat CrpImg28 = bw2(crop28);
+	//imshow("Crop28", CrpImg28);
+
+
+	int TotalNumberOfPixels11 = CrpImg11.rows * CrpImg11.cols;
+	int ZeroPixels11 = TotalNumberOfPixels11 - countNonZero(CrpImg11);
+	//cout << "CrpImg11 " << ZeroPixels11 << endl;
+
+
+	int TotalNumberOfPixels12 = CrpImg12.rows * CrpImg12.cols;
+	int ZeroPixels12 = TotalNumberOfPixels12 - countNonZero(CrpImg12);
+	//cout << "CrpImg12 " << ZeroPixels12 << endl;
+
+
+	int TotalNumberOfPixels13 = CrpImg13.rows * CrpImg13.cols;
+	int ZeroPixels13 = TotalNumberOfPixels13 - countNonZero(CrpImg13);
+	//cout << "CrpImg13 " << ZeroPixels13 << endl;
+
+	int TotalNumberOfPixels14 = CrpImg14.rows * CrpImg14.cols;
+	int ZeroPixels14 = TotalNumberOfPixels14 - countNonZero(CrpImg14);
+	//cout << "CrpImg14 " << ZeroPixels14 << endl;
+
+	int TotalNumberOfPixels15 = CrpImg15.rows * CrpImg15.cols;
+	int ZeroPixels15 = TotalNumberOfPixels15 - countNonZero(CrpImg15);
+	//cout << "CrpImg15 " << ZeroPixels15 << endl;
+
+	int TotalNumberOfPixels16 = CrpImg16.rows * CrpImg16.cols;
+	int ZeroPixels16 = TotalNumberOfPixels16 - countNonZero(CrpImg16);
+	//cout << "CrpImg16 " << ZeroPixels16 << endl;
+
+	int TotalNumberOfPixels17 = CrpImg17.rows * CrpImg17.cols;
+	int ZeroPixels17 = TotalNumberOfPixels17 - countNonZero(CrpImg17);
+	//cout << "CrpImg17 " << ZeroPixels17 << endl;
+
+	int TotalNumberOfPixels18 = CrpImg18.rows * CrpImg18.cols;
+	int ZeroPixels18 = TotalNumberOfPixels18 - countNonZero(CrpImg18);
+	//cout << "CrpImg18 " << ZeroPixels18 << endl;
+
+	int TotalNumberOfPixels19 = CrpImg19.rows * CrpImg19.cols;
+	int ZeroPixels19 = TotalNumberOfPixels19 - countNonZero(CrpImg19);
+	//cout << "CrpImg19 " << ZeroPixels19 << endl;
+
+	int TotalNumberOfPixels20 = CrpImg20.rows * CrpImg20.cols;
+	int ZeroPixels20 = TotalNumberOfPixels20 - countNonZero(CrpImg20);
+	//cout << "CrpImg20 " << ZeroPixels20 << endl;
+
+	int TotalNumberOfPixels21 = CrpImg21.rows * CrpImg21.cols;
+	int ZeroPixels21 = TotalNumberOfPixels21 - countNonZero(CrpImg21);
+	//cout << "CrpImg21 " << ZeroPixels21 << endl;
+
+	int TotalNumberOfPixels22 = CrpImg22.rows * CrpImg22.cols;
+	int ZeroPixels22 = TotalNumberOfPixels22 - countNonZero(CrpImg22);
+	//cout << "CrpImg22 " << ZeroPixels22 << endl;
+
+	int TotalNumberOfPixels23 = CrpImg23.rows * CrpImg23.cols;
+	int ZeroPixels23 = TotalNumberOfPixels23 - countNonZero(CrpImg23);
+	//cout << "CrpImg23 " << ZeroPixels23 << endl;
+
+	int TotalNumberOfPixels24 = CrpImg24.rows * CrpImg24.cols;
+	int ZeroPixels24 = TotalNumberOfPixels24 - countNonZero(CrpImg24);
+	//cout << "CrpImg24 " << ZeroPixels24 << endl;
+
+	int TotalNumberOfPixels25 = CrpImg25.rows * CrpImg25.cols;
+	int ZeroPixels25 = TotalNumberOfPixels25 - countNonZero(CrpImg25);
+	//cout << "CrpImg15 " << ZeroPixels15 << endl;
+
+	int TotalNumberOfPixels26 = CrpImg26.rows * CrpImg26.cols;
+	int ZeroPixels26 = TotalNumberOfPixels26 - countNonZero(CrpImg26);
+	//cout << "CrpImg26 " << ZeroPixels26 << endl;
+
+	int TotalNumberOfPixels27 = CrpImg27.rows * CrpImg27.cols;
+	int ZeroPixels27 = TotalNumberOfPixels27 - countNonZero(CrpImg27);
+	//cout << "CrpImg27 " << ZeroPixels27 << endl;
+
+	int TotalNumberOfPixels28 = CrpImg28.rows * CrpImg28.cols;
+	int ZeroPixels28 = TotalNumberOfPixels28 - countNonZero(CrpImg28);
+	//cout << "CrpImg28 " << ZeroPixels28 << endl;
+
+	int Num = 0;
+	if (ZeroPixels11 > 4000) {
+		rectangle(img1, Point(110, 120), Point(220, 260), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(110, 120), Point(220, 260), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels12 > 4000) {
+		rectangle(img1, Point(220, 120), Point(340, 260), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(220, 120), Point(340, 260), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels13 > 4000) {
+		rectangle(img1, Point(340, 120), Point(460, 260), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(340, 120), Point(460, 260), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels14 > 4000) {
+		rectangle(img1, Point(460, 120), Point(560, 260), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(460, 120), Point(560, 260), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels15 > 4000) {
+		rectangle(img1, Point(560, 120), Point(690, 260), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(560, 120), Point(690, 260), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels16 > 4000) {
+		rectangle(img1, Point(690, 120), Point(810, 260), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(690, 120), Point(810, 260), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels17 > 4000) {
+		rectangle(img1, Point(810, 120), Point(930, 260), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(810, 120), Point(930, 260), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels18 > 4000) {
+		rectangle(img1, Point(930, 120), Point(1050, 260), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(930, 120), Point(1050, 260), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels19 > 4000) {
+		rectangle(img1, Point(1050, 120), Point(1170, 260), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(1050, 120), Point(1170, 260), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels20 > 4000) {
+		rectangle(img1, Point(1050, 290), Point(1170, 450), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(1050, 290), Point(1170, 450), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels21 > 4000) {
+		rectangle(img1, Point(110, 290), Point(220, 450), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(110, 290), Point(220, 450), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels22 > 4000) {
+		rectangle(img1, Point(220, 290), Point(340, 450), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(220, 290), Point(340, 450), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels23 > 4000) {
+		rectangle(img1, Point(340, 290), Point(460, 450), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(340, 290), Point(460, 450), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels24 > 4000) {
+		rectangle(img1, Point(460, 290), Point(560, 450), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(460, 290), Point(560, 450), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels25 > 4000) {
+		rectangle(img1, Point(560, 290), Point(690, 450), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(560, 290), Point(690, 450), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels26 > 4000) {
+		rectangle(img1, Point(690, 290), Point(810, 450), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(690, 290), Point(810, 450), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels27 > 4000) {
+		rectangle(img1, Point(810, 290), Point(930, 450), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(810, 290), Point(930, 450), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+	if (ZeroPixels28 > 4000) {
+		rectangle(img1, Point(930, 290), Point(1050, 450), Scalar(0x0, 0x0, 0xff), 10, 0, 0);
+		Num = Num + 1;
+	}
+	else
+		rectangle(img1, Point(930, 290), Point(1050, 450), Scalar(0x0, 0x80, 0x0), 10, 0, 0);
+
+
+	imshow("image", img1);
+	printf("Number of parking spaces can detected  = %d \n", Num);
+	int Free = 0;
+	Free = 18 - Num;
+	printf("Number of parking spaces available = %d \n", Free);
+
+
+	waitKey(0);
+}
+
+Mat ConvertRGB2Gray(Mat frame) {
+	Size size = frame.size();
+	Mat frame_gray(size, CV_8UC1);
+	int i, j, R, G, B;
+	for (i = 0; i < frame.rows; i++) {
+		for (j = 0; j < frame.cols; j++) {
+			B = frame.at<Vec3b>(i, j)[0];
+			G = frame.at<Vec3b>(i, j)[1];
+			R = frame.at<Vec3b>(i, j)[2];
+			frame_gray.at<uchar>(i, j) = (int)(0.299*R + 0.587*G + 0.114*B);
+		}
+	}
+	return frame_gray;
+}
+
+Mat Gray2BW(Mat gray, int th) {
+	Size size = gray.size();
+	Mat bw(size, CV_8UC1);
+	int i, j;
+	for (i = 0; i < gray.rows; i++) {
+		for (j = 0; j < gray.cols; j++) {
+			if (gray.at<uchar>(i, j) < th)
+				bw.at<uchar>(i, j) = 255;
+			else
+				bw.at<uchar>(i, j) = 0;
+
+		}
+	}
+	return bw;
+}
+
+
